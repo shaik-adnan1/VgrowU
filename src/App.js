@@ -1,24 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import Funnel from "./components/funnel/funnel.component.js";
+import VideoPlayer from "./components/videoPlayer/VideoPlayer.component.js";
+import ContactForm from "./components/detailsPopup/contactForm.js";
+import { React, useState } from "react";
+import { createContext } from "react";
+export const GlobalContext = createContext();
 
 function App() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [detailsFilled, setDetailsFIlled] = useState(false);
+  const value = {
+    isModalOpen,
+    setIsModalOpen,
+    detailsFilled,
+    setDetailsFIlled,
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <GlobalContext.Provider value={value}>
+        <Funnel />
+      </GlobalContext.Provider>
+    </>
   );
 }
 
