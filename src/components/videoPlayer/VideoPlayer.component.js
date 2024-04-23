@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-import { GlobalContext } from "../../App";
+// import { GlobalContext } from "../../App";
+import { GlobalContext } from "../../context/globalContext";
 import "./videoplayer.css"; // Ensure your CSS is linked correctly
 
 import testVideo from "../../assets/funnelVideo/funnel.mp4";
-const VideoPlayer = () => {
+const VideoPlayer = ({ isPLayable }) => {
   const videoRef = useRef(null);
   const progressBarRef = useRef(null);
   const videoTimelineRef = useRef(null);
@@ -18,6 +19,27 @@ const VideoPlayer = () => {
 
   // context
   const { detailsFilled, detailsPopup } = useContext(GlobalContext);
+
+  const [showApplyNow, setShowApplyNow] = useState(false); // State to control Apply Now button
+
+  useEffect(() => {
+    if (videoRef.current) {
+      const handleVideoEnded = () => {
+        const remainingTime =
+          videoRef.current.duration - videoRef.current.currentTime;
+        if (remainingTime <= 300) {
+          // Show button 5 mins before video ends (300 seconds)
+          setShowApplyNow(true);
+        }
+      };
+
+      videoRef.current.addEventListener("ended", handleVideoEnded);
+
+      return () => {
+        videoRef.current.removeEventListener("ended", handleVideoEnded);
+      };
+    }
+  }, [videoRef.current]);
 
   // Play or pause the video
   const togglePlayPause = () => {
@@ -131,10 +153,12 @@ const VideoPlayer = () => {
 
   return (
     <div
-      className={`container ${showControls ? "show-controls" : ""}`}
+      className={`container ${showControls ? "show-controls" : ""} ${
+        isPLayable ? "container_playable" : ""
+      }`}
       onMouseMove={() => setShowControls(true)}
     >
-      {detailsFilled ? (
+      {isPLayable ? (
         <div className="wrapper">
           <ul className="video-controls">
             <li className="options left">

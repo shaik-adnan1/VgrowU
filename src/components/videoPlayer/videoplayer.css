@@ -26,6 +26,10 @@
   position: relative;
   /* box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); */
 }
+
+.container_playable {
+  max-width: 1000px;
+}
 .container.fullscreen {
   max-width: 100%;
   width: 100%;
@@ -55,9 +59,6 @@
   transition: all 0.08s ease;
 }
 
-.wrapper_logo ion-icon{
- 
-}
 
 .container.show-controls .wrapper {
   opacity: 0;

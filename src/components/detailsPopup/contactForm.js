@@ -3,7 +3,8 @@ import axios from "axios";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import "./contactForm.css";
-import { GlobalContext } from "../../App";
+// import { GlobalContext } from "../../App";
+import { GlobalContext } from "../../context/globalContext";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -17,16 +18,12 @@ const Form = () => {
     emailAddress: "",
   });
 
-  const [errors, setErrors] = useState({
-    fullName: "",
-    phoneNumber: "",
-    emailAddress: "",
-  });
+  const [errors, setErrors] = useState({}); // Initialize errors as an empty object
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    setErrors({ ...errors, [name]: "" });
+    setErrors({ ...errors, [name]: "" }); 
   };
 
   const handlePhoneChange = (value) => {
@@ -38,7 +35,7 @@ const Form = () => {
     e.preventDefault();
 
     // Validate form fields
-    const newErrors = {};
+    let newErrors = {};
     if (!formData.fullName.trim()) {
       newErrors.fullName = "Full Name is required";
     }
@@ -49,25 +46,26 @@ const Form = () => {
       newErrors.emailAddress = "Email Address is required";
     }
 
-      // Validate form fields
-      // ... existing validation logic
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return; // Prevent form submission if errors exist
+    }
 
-      if (Object.keys(newErrors).length > 0) {
-        setErrors(newErrors);
-        return;
-      }
-
-      try {
-        await axios.post("https://sheetdb.io/api/v1/psgmix87nfzzi", formData);
-        alert("Form submitted successfully!");
-        setFormData({
-          // ... reset form data
-        });
-        // Navigate to `/vgrowU-info` after successful submission
-        navigate("/vgrowU-info");
-      } catch (error) {
-        console.error("Error:", error);
-      }
+    try {
+      const response = await axios.post(
+        "https://sheetdb.io/api/v1/psgmix87nfzzi",
+        formData
+      );
+      console.log("Form submission response:", response); 
+      setFormData({
+        fullName: "",
+        phoneNumber: "",
+        emailAddress: "",
+      });
+      navigate("/vgrowU-info");
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   return (
@@ -140,6 +138,6 @@ const Form = () => {
       </div>
     </>
   );
-};
 
+}
 export default Form;

@@ -5,7 +5,8 @@ import logo from "../../assets/logo.png";
 import "./Funnel.component.css";
 import VideoPlayer from "../videoPlayer/VideoPlayer.component";
 import ContactForm from "../detailsPopup/contactForm";
-import { GlobalContext } from "../../App";
+// import { GlobalContext } from "../../App";
+import { GlobalContext } from "../../context/globalContext";
 
 const Funnel = () => {
   const { isModalOpen, setIsModalOpen, detailsPopup } = useContext(GlobalContext);
@@ -29,7 +30,7 @@ const Funnel = () => {
         </div>
         <div className="video_Vdesc_container">
           <div className="videoPlayer_container">
-            <VideoPlayer />
+            <VideoPlayer isPLayable={false}/>
           </div>
           <div className="Vdec_container">
             <h2>EXCLUSIVE FREE CASE STUDY</h2>
