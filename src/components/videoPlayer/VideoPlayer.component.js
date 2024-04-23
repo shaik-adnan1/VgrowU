@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
+import { GlobalContext } from "../../App";
 import "./videoplayer.css"; // Ensure your CSS is linked correctly
 
 import testVideo from "../../assets/funnelVideo/funnel.mp4";
@@ -14,6 +15,9 @@ const VideoPlayer = () => {
   const [showControls, setShowControls] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showSpeedOptions, setShowSpeedOptions] = useState(false);
+
+  // context
+  const { detailsFilled, detailsPopup } = useContext(GlobalContext);
 
   // Play or pause the video
   const togglePlayPause = () => {
@@ -130,101 +134,87 @@ const VideoPlayer = () => {
       className={`container ${showControls ? "show-controls" : ""}`}
       onMouseMove={() => setShowControls(true)}
     >
-      <div className="wrapper">
-        {/* <div
-          className='video-timeline'
-          ref={videoTimelineRef}
-          onClick={handleProgressBarClick}
-        >
-          <div className='progress-area'>
-            <span>{formatTime(currentTime)}</span>
-            <div className='progress-bar' ref={progressBarRef}></div>
-          </div>
-        </div> */}
-        <ul className="video-controls">
-          <li className="options left">
-            <button
-              className="volume"
-              onClick={() =>
-                setVolume((prevVolume) => (prevVolume > 0 ? 0 : 0.5))
-              }
-            >
-              <i
-                className={`fa-solid ${
-                  volume > 0 ? "fa-volume-high" : "fa-volume-xmark"
-                }`}
-              ></i>
-            </button>
-            <input
-              type="range"
-              min="0"
-              max="1"
-              step="any"
-              value={volume}
-              onChange={handleVolumeChange}
-            />
-            <div className="video-timer">
-              <p className="current-time">{formatTime(currentTime)}</p>
-              <p className="separator"> / </p>
-              <p className="video-duration">{formatTime(duration)}</p>
-            </div>
-          </li>
-          <li className="options center">
-            {/* <button
-              className='skip-backward'
-              onClick={() => (videoRef.current.currentTime -= 5)}
-            >
-              <i className='fas fa-backward'></i>
-            </button> */}
-            <button className="play-pause" onClick={togglePlayPause}>
-              <i className={`fas ${isPlaying ? "fa-pause" : "fa-play"}`}></i>
-            </button>
-            {/* <button
-              className='skip-forward'
-              onClick={() => (videoRef.current.currentTime += 5)}
-            ></button>
-          */}
-          </li>
-          <li className="options right">
-            <div className="playback-content">
+      {detailsFilled ? (
+        <div className="wrapper">
+          <ul className="video-controls">
+            <li className="options left">
               <button
-                className="playback-speed"
-                onClick={() => setShowSpeedOptions(!showSpeedOptions)}
+                className="volume"
+                onClick={() =>
+                  setVolume((prevVolume) => (prevVolume > 0 ? 0 : 0.5))
+                }
               >
-                <span className="material-symbols-rounded">
-                  <ion-icon name="play-forward-circle-outline" className="multi_margin_icon"></ion-icon>
-                </span>
+                <i
+                  className={`fa-solid ${
+                    volume > 0 ? "fa-volume-high" : "fa-volume-xmark"
+                  }`}
+                ></i>
               </button>
-              {showSpeedOptions && (
-                <ul className="speed-options show">
-                  {[0.5, 0.75, 1, 1.5, 2].map((speed) => (
-                    <li
-                      key={speed}
-                      className={playbackRate === speed ? "active" : ""}
-                      onClick={() => handleSpeedOptionClick(speed)}
-                    >
-                      {speed}x
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-            <button className="pic-in-pic" onClick={togglePip}>
-              <span className="material-icons multi_margin_icon">
-                {" "}
-                <ion-icon name="push-outline"></ion-icon>
-              </span>{" "}
-            </button>
-            <button className="fullscreen" onClick={toggleFullScreen}>
-              <i
-                className={`fa-solid ${
-                  isFullscreen ? "fa-compress" : "fa-expand"
-                }`}
-              ></i>
-            </button>
-          </li>
-        </ul>
-      </div>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="any"
+                value={volume}
+                onChange={handleVolumeChange}
+              />
+              <div className="video-timer">
+                <p className="current-time">{formatTime(currentTime)}</p>
+                <p className="separator"> / </p>
+                <p className="video-duration">{formatTime(duration)}</p>
+              </div>
+            </li>
+            <li className="options center">
+              <button className="play-pause" onClick={togglePlayPause}>
+                <i className={`fas ${isPlaying ? "fa-pause" : "fa-play"}`}></i>
+              </button>
+            </li>
+            <li className="options right">
+              <div className="playback-content">
+                <button
+                  className="playback-speed"
+                  onClick={() => setShowSpeedOptions(!showSpeedOptions)}
+                >
+                  <span className="material-symbols-rounded multi_margin_icon multi_margin_icon_playback">
+                    <ion-icon name="play-forward-circle-outline"></ion-icon>
+                  </span>
+                </button>
+                {showSpeedOptions && (
+                  <ul className="speed-options show">
+                    {[0.5, 0.75, 1, 1.5, 2].map((speed) => (
+                      <li
+                        key={speed}
+                        className={playbackRate === speed ? "active" : ""}
+                        onClick={() => handleSpeedOptionClick(speed)}
+                      >
+                        {speed}x
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+              <button className="pic-in-pic" onClick={togglePip}>
+                <span className="material-icons multi_margin_icon">
+                  {" "}
+                  <ion-icon name="push-outline"></ion-icon>
+                </span>{" "}
+              </button>
+              <button className="fullscreen" onClick={toggleFullScreen}>
+                <i
+                  className={`fa-solid ${
+                    isFullscreen ? "fa-compress" : "fa-expand"
+                  }`}
+                ></i>
+              </button>
+            </li>
+          </ul>
+        </div>
+      ) : (
+        <div className="wrapper_logo" onClick={detailsPopup}>
+          <ion-icon name="logo-youtube"></ion-icon>
+        </div>
+      )}
+
       <video
         ref={videoRef}
         src={testVideo}

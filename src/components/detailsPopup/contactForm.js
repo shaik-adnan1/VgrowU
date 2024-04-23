@@ -5,13 +5,11 @@ import "react-phone-input-2/lib/style.css";
 import "./contactForm.css";
 import { GlobalContext } from "../../App";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+
 const Form = () => {
-  const { isModalOpen, setIsModalOpen } = useContext(GlobalContext);
-  const detailsPopup_close = () => {
-    console.log("button clicked");
-    isModalOpen ? setIsModalOpen(false) : setIsModalOpen(true);
-    console.log(isModalOpen);
-  };
+  const { isModalOpen, detailsPopup } = useContext(GlobalContext);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -51,22 +49,25 @@ const Form = () => {
       newErrors.emailAddress = "Email Address is required";
     }
 
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
+      // Validate form fields
+      // ... existing validation logic
 
-    try {
-      await axios.post("https://sheetdb.io/api/v1/psgmix87nfzzi", formData);
-      alert("Form submitted successfully!");
-      setFormData({
-        fullName: "",
-        phoneNumber: "",
-        emailAddress: "",
-      });
-    } catch (error) {
-      console.error("Error:", error);
-    }
+      if (Object.keys(newErrors).length > 0) {
+        setErrors(newErrors);
+        return;
+      }
+
+      try {
+        await axios.post("https://sheetdb.io/api/v1/psgmix87nfzzi", formData);
+        alert("Form submitted successfully!");
+        setFormData({
+          // ... reset form data
+        });
+        // Navigate to `/vgrowU-info` after successful submission
+        navigate("/vgrowU-info");
+      } catch (error) {
+        console.error("Error:", error);
+      }
   };
 
   return (
@@ -76,10 +77,13 @@ const Form = () => {
           isModalOpen ? "form_container_open" : "form_container_closed"
         }
       >
-        <div className="overlay" onClick={detailsPopup_close}></div>
+        <div className="overlay" onClick={detailsPopup}></div>
         <div className="form-container">
-
-          <ion-icon name="close-outline" className="form_close_btn" onClick={detailsPopup_close}></ion-icon>
+          <ion-icon
+            name="close-outline"
+            className="form_close_btn"
+            onClick={detailsPopup}
+          ></ion-icon>
           <h2 className="form_heading">
             Enter your info to get instant access to our DEVELOPMENT Video
           </h2>
@@ -124,7 +128,10 @@ const Form = () => {
                 <span className="error-message">{errors.emailAddress}</span>
               )}
             </div>
-            <button type="submit" className="submit-button">
+            <button
+              type="submit"
+              className="submit-button"
+            >
               WATCH NOW FOR FREE
             </button>
             <p className="info_secure">YOUR INFORMATION IS 100% SECURE</p>

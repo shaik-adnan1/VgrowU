@@ -8,12 +8,8 @@ import ContactForm from "../detailsPopup/contactForm";
 import { GlobalContext } from "../../App";
 
 const Funnel = () => {
-  const { isModalOpen, setIsModalOpen } = useContext(GlobalContext);
-  const detailsPopup = () => {
-    console.log("button clicked");
-    isModalOpen ? setIsModalOpen(false) : setIsModalOpen(true);
-    console.log(isModalOpen);
-  };
+  const { isModalOpen, setIsModalOpen, detailsPopup } = useContext(GlobalContext);
+ 
 
   return (
     <>

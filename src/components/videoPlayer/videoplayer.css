@@ -1,7 +1,6 @@
 /* Import Google font - Poppins */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
 
-
 * {
   margin: 0;
   padding: 0;
@@ -42,6 +41,24 @@
   bottom: -15px;
   transition: all 0.08s ease;
 }
+
+.wrapper_logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  opacity: 1;
+  font-size: 80px;
+  color: red;
+  cursor: pointer;
+  transition: all 0.08s ease;
+}
+
+.wrapper_logo ion-icon{
+ 
+}
+
 .container.show-controls .wrapper {
   opacity: 0;
   bottom: 0;
@@ -248,4 +265,15 @@
 
 .multi_margin_icon {
   margin-top: 50px;
+}
+
+/* new icons */
+
+.multi_margin_icon ion-icon {
+  margin-top: 0.7rem;
+  font-weight: bold;
+}
+
+.multi_margin_icon_playback ion-icon {
+  margin-top: 0.6rem;
 }
