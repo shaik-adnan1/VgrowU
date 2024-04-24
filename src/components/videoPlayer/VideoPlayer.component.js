@@ -37,7 +37,8 @@ const VideoPlayer = ({ isPLayable }) => {
 
       return () => {
         videoRef.current.removeEventListener("ended", handleVideoEnded);
-      };
+      }
+      // test commit
     }
   }, [videoRef.current]);
 
