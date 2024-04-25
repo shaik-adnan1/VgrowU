@@ -33,6 +33,7 @@ const VideoPlayer = ({ isPLayable }) => {
         }
       };
       // TEST COMMIT 2
+      // test commit 4
       // test commit 3
 
       videoRef.current.addEventListener("ended", handleVideoEnded);
