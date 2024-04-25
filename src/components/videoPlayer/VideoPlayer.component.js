@@ -32,6 +32,7 @@ const VideoPlayer = ({ isPLayable }) => {
           setShowApplyNow(true);
         }
       };
+      // TEST COMMIT 2
 
       videoRef.current.addEventListener("ended", handleVideoEnded);
 
